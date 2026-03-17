@@ -136,14 +136,20 @@ func updateTodoText(c *fiber.Ctx) error {
 	})
 }
 func main() {
-	fmt.Println("hello world")
+	env := os.Getenv("ENV")
+	if env == "" {
+		env = "development"
+	}
 
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("error loading .env file")
+	// Render uses real environment variables; load .env only for local dev.
+	if env != "production" {
+		_ = godotenv.Load(".env")
 	}
 
 	MONGO_URI := os.Getenv("MONGO_URI")
+	if MONGO_URI == "" {
+		log.Fatal("MONGO_URI is not set")
+	}
 	clientOptions := options.Client().ApplyURI(MONGO_URI)
 	client, err := mongo.Connect(context.Background(), clientOptions)
 
@@ -167,7 +173,7 @@ func main() {
 
 	allowedOrigins := os.Getenv("CORS_ORIGINS")
 	if allowedOrigins == "" {
-		allowedOrigins = "http://localhost:5173,http://localhost:3000"
+		allowedOrigins = "*"
 	}
 
 	app.Use(cors.New(cors.Config{
@@ -187,7 +193,7 @@ func main() {
 		port = "5000"
 	}
 
-	if os.Getenv("ENV") == "production" {
+	if env == "production" {
 		app.Static("/", "./client/dist")
 	}
 	log.Fatal(app.Listen("0.0.0.0:" + port))
