@@ -1,4 +1,5 @@
-const API = "http://localhost:5000/api/todos";
+const BASE_URL = "https://go-react-todo-1.onrender.com" ?? "http://localhost:5000";
+const API = `${BASE_URL}/api/todos`;
 
 export const getTodos = async () => {
   const res = await fetch(API);
