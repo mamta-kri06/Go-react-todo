@@ -1,0 +1,33 @@
+.DS_Store
+Thumbs.db
+
+# Env files / secrets
+.env
+**/.env
+**/.env.*
+
+# Node
+**/node_modules/
+**/.vite/
+**/dist/
+**/build/
+**/.turbo/
+**/.next/
+**/.parcel-cache/
+**/*.log
+
+# Go
+**/*.exe
+**/*.dll
+**/*.so
+**/*.dylib
+**/*.test
+**/*.out
+
+# IDE
+.vscode/
+.idea/
+
+# Not part of this repo upload
+frontend/
+
